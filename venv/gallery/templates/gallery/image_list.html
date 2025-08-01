@@ -1,0 +1,31 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %}Image List{% endblock %}
+
+{% block content %}
+<h1 class="text-4xl font-bold text-center mb-8 text-blue-700">Explore the Gallery</h1>
+
+{% if images %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for image in images %}
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+            <img src="{{ image.image_file.url }}" alt="{{ image.title }}" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ image.title }}</h2>
+                {% if image.description %}
+                    <p class="text-gray-600 text-sm mb-3">{{ image.description|truncatechars:100 }}</p>
+                {% endif %}
+                <p class="text-gray-500 text-xs">Uploaded: {{ image.uploaded_at|date:"M d, Y" }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center p-8 bg-white rounded-lg shadow-md">
+        <p class="text-gray-600 text-lg mb-4">No images uploaded yet. Be the first to add one!</p>
+        <a href="{% url 'upload_image' %}" class="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition duration-300 shadow-md">
+            Upload Your First Image
+        </a>
+    </div>
+{% endif %}
+{% endblock %}
